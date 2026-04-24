@@ -70,8 +70,10 @@ export default function WalletPopup({
 
   const { width, height } = POPUP_SIZES[key];
 
-  const isTabletCustomFont =
-    windowWidth <= 1023 && windowWidth >= 640;
+  // const isTabletCustomFont =
+  //   windowWidth <= 1023 && windowWidth >= 640;
+  const isMobile = windowWidth <= 639;
+  const isTablet = windowWidth >= 640 && windowWidth <= 1023;
 
   return createPortal(
     <>
@@ -134,7 +136,7 @@ export default function WalletPopup({
               </span>
             )}
             {/* Title */}
-            <div
+            {/* <div
               className="
                 text-white 
                 font-instrument 
@@ -164,7 +166,38 @@ export default function WalletPopup({
                   WALLET
                 </>
               )}
-            </div>
+            </div> */}
+            <div
+            className={`
+            text-white
+            font-instrument
+            font-bold
+            uppercase
+            text-center
+            mb-2
+            ${isMobile ? "tracking-[0.12em]" : "tracking-[0.20em]"}
+            `}
+            style={{
+            fontSize: isMobile ? 24 : isTablet ? 30 : 36,
+            lineHeight: isMobile ? "30px" : isTablet ? "36px" : "42px",
+            }}
+            >
+            {status === "connecting" && "WALLET CONNECTING..."}
+            {status === "failed" && (
+            <>
+            WALLET CONNECTION
+            <br />
+            FAILED
+            </>
+            )}
+              {status === "success" && (
+              <>
+                SUCCESSFULLY CONNECTED
+              <br />
+                WALLET
+              </>
+              )}
+              </div>
             {/* Text/Buttons */}
             {status === "connecting" && (
               <div className="text-[#C9E2FF] font-instrument font-normal text-[26px] leading-[38px] mt-[16px] text-center
@@ -197,9 +230,13 @@ export default function WalletPopup({
                     mt-4
                     mb-8
                   "
+                  // style={{
+                  //   fontSize: isTabletCustomFont ? 14 : 20,
+                  //   lineHeight: isTabletCustomFont ? "20px" : "28px",
+                  // }}
                   style={{
-                    fontSize: isTabletCustomFont ? 14 : 20,
-                    lineHeight: isTabletCustomFont ? "20px" : "28px",
+                  fontSize: isMobile ? 12 : isTablet ? 14 : 20,
+                  lineHeight: isMobile ? "18px" : isTablet ? "20px" : "28px",
                   }}
                 >
                   {/* TODO: Show actual wallet address from backend after successful connection */}
