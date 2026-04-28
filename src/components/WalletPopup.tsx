@@ -178,7 +178,7 @@ export default function WalletPopup({
             ${isMobile ? "tracking-[0.12em]" : "tracking-[0.20em]"}
             `}
             style={{
-            fontSize: isMobile ? 24 : isTablet ? 30 : 36,
+            fontSize: isMobile ? 21 : isTablet ? 30 : 36,
             lineHeight: isMobile ? "30px" : isTablet ? "36px" : "42px",
             }}
             >
