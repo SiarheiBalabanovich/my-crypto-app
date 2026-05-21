@@ -62,9 +62,9 @@ export default function ProgressSection() {
   // ===== DESKTOP BEADS =====
   const rightBeads: Bead[] = [];
   let tPrev: number = tCenter;
-  let prevR: number = circleStyles[0].r;
+  let prevR: number = circleStyles[0]!.r;
   for (let i = 1; i <= Math.min(beadCount, total - activeIdx - 1); ++i) {
-    const { r: currR, fill, opacity } = circleStyles[i];
+    const { r: currR, fill, opacity } = circleStyles[i]!;
     const t: number = getNextTByEdge(tPrev, prevR, currR);
     const { x, y } = getBezierXY(t);
     rightBeads.push({ x, y, r: currR, fill, opacity });
@@ -73,9 +73,9 @@ export default function ProgressSection() {
   }
   const leftBeads: Bead[] = [];
   let tPrevL: number = tCenter;
-  let prevRL: number = circleStyles[0].r;
+  let prevRL: number = circleStyles[0]!.r;
   for (let i = 1; i <= Math.min(beadCount, activeIdx); ++i) {
-    const { r: currR, fill, opacity } = circleStyles[i];
+    const { r: currR, fill, opacity } = circleStyles[i]!;
     let t: number = tPrevL;
     const steps: number = 150;
     for (let j = 1; j <= steps; ++j) {
@@ -95,7 +95,7 @@ export default function ProgressSection() {
   }
 
   // ===== CENTRAL BEAD =====
-  const { r: centerR, fill: centerFill, opacity: centerOp } = circleStyles[0];
+  const { r: centerR, fill: centerFill, opacity: centerOp } = circleStyles[0]!;
   const { x: cx, y: cy } = getBezierXY(tCenter);
 
   // ===== HANDLERS =====
@@ -267,7 +267,7 @@ export default function ProgressSection() {
                   textAlign: "center",
                 }}
               >
-                {progressSteps[activeIdx].planet}
+                {progressSteps[activeIdx]!.planet}
               </div>
               <div
                 style={{
@@ -278,7 +278,7 @@ export default function ProgressSection() {
                   textAlign: "center",
                 }}
               >
-                {progressSteps[activeIdx].date}
+                {progressSteps[activeIdx]!.date}
               </div>
             </motion.div>
           </AnimatePresence>
@@ -321,7 +321,7 @@ export default function ProgressSection() {
             minHeight: 100,
           }}
         >
-          {progressSteps[activeIdx].title}
+          {progressSteps[activeIdx]!.title}
         </h3>
         <p
           style={{
@@ -334,7 +334,7 @@ export default function ProgressSection() {
             minHeight: 90,
           }}
         >
-          {progressSteps[activeIdx].description}
+          {progressSteps[activeIdx]!.description}
         </p>
         <div className="flex items-center justify-center mt-8 mb-8" style={{ gap: isMobileOrTablet ? 16 : 32 }}>
           <button
@@ -484,7 +484,7 @@ export default function ProgressSection() {
                   textAlign: "center"
                 }}
               >
-                {progressSteps[activeIdx].planet}
+                {progressSteps[activeIdx]!.planet}
               </text>
               <text
                 x={cx}
@@ -499,7 +499,7 @@ export default function ProgressSection() {
                   textAlign: "center"
                 }}
               >
-                {progressSteps[activeIdx].date}
+                {progressSteps[activeIdx]!.date}
               </text>
             </motion.g>
           </AnimatePresence>
@@ -562,7 +562,7 @@ export default function ProgressSection() {
                 textAlign: "center"
               }}
             >
-              {progressSteps[activeIdx].title}
+              {progressSteps[activeIdx]!.title}
             </h3>
             <p
               style={{
@@ -574,7 +574,7 @@ export default function ProgressSection() {
                 textAlign: "center"
               }}
             >
-              {progressSteps[activeIdx].description}
+              {progressSteps[activeIdx]!.description}
             </p>
           </motion.div>
         </AnimatePresence>

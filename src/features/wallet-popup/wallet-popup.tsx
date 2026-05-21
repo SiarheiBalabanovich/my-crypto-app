@@ -10,7 +10,7 @@ type WalletPopupStatus = "connecting" | "failed" | "success";
 type WalletPopupProps = {
   open: boolean;
   status: WalletPopupStatus;
-  walletAddress?: string;
+  walletAddress?: string | undefined;
   onClose: () => void;
   onTryAgain?: () => void;
   // TODO: You can add props for backend error codes/messages if needed.
