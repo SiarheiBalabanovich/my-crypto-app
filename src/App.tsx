@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HeroSection from "./components/HeroSection";
-import FeatureSection from "./components/FeatureSection";
-import DashboardSection from "./components/DashboardSection";
-import ProgressSection from "./components/ProgressSection";
-import ReadyToTrySection from "./components/ReadyToTrySection";
-import Footer from "./components/Footer";
-import DashboardPage from "./components/DashboardPage";
+import HeroSection from "./widgets/landing/hero-section";
+import FeatureSection from "./widgets/landing/feature-section";
+import DashboardSection from "./widgets/dashboard/dashboard-section";
+import ProgressSection from "./widgets/landing/progress-section";
+import ReadyToTrySection from "./widgets/landing/ready-to-try-section";
+import Footer from "./widgets/layout/footer";
+import DashboardPage from "./pages/dashboard/dashboard-page";
 
 
 export default function App() {
