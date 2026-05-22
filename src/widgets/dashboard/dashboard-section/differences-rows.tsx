@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DashboardTooltip from "../widgets/dashboard/dashboard-tooltip/DashboardTooltip";
+import DashboardTooltip from "../dashboard-tooltip/dashboard-tooltip";
 
 // --- Types for (Differences) ---
 // TODO Udoop: Replace with API response when backend is ready
@@ -112,7 +112,7 @@ const DifferencesCard: React.FC<DifferencesCardProps> = ({ title }) => {
             >
               <DashboardTooltip
                 title={title}
-                text={tooltipData[title].text}
+                text={tooltipData[title]!.text}
                 icon={null}
                 onClose={() => setShowTooltip(false)}
               />
@@ -220,7 +220,7 @@ const DifferencesMobile: React.FC = () => {
             >
               <DashboardTooltip
                 title="Mood Differences"
-                text={tooltipData["Mood Differences"].text}
+                text={tooltipData["Mood Differences"]!.text}
                 icon={null}
                 onClose={() => setShowTooltipMood(false)}
               />
@@ -266,7 +266,7 @@ const DifferencesMobile: React.FC = () => {
             >
               <DashboardTooltip
                 title="Engagement Differences"
-                text={tooltipData["Engagement Differences"].text}
+                text={tooltipData["Engagement Differences"]!.text}
                 icon={null}
                 onClose={() => setShowTooltipEng(false)}
               />

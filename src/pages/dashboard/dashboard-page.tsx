@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useMemo } from "react";
-import DashboardSection from "../widgets/dashboard/dashboard-section/DashboardSection";
-import TokenUnderReviewScreen from "./TokenUnderReviewScreen";
-import SubscribeNowScreen from "./SubscribeNowScreen";
-import ConnectWalletScreen from "./ConnectWalletScreen";
+import DashboardSection from "../../widgets/dashboard/dashboard-section/dashboard-section";
+import TokenUnderReviewScreen from "../../features/token-under-review/token-under-review-screen";
+import SubscribeNowScreen from "../../features/subscribe-now/subscribe-now-screen";
+import ConnectWalletScreen from "../../features/connect-wallet/connect-wallet-screen";
 
 // TODO: Replace these helper functions with real API/Redux hooks once backend is connected.
 
