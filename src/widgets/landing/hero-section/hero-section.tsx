@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "./Header";
-import SearchBar from "./SearchBar";
-import CryptoCard from "./CryptoCard";
+import Header from "../../layout/header/Header";
+import SearchBar from "../../../features/search-crypto/search-crypto";
+import CryptoCard from "../../../entities/crypto/ui/crypto-card";
 import bgHeroSection from "../assets/bg-hero-section.webp";
 import guruImage from '../assets/GURU.png';
 import dgbImage from '../assets/DGB.png';

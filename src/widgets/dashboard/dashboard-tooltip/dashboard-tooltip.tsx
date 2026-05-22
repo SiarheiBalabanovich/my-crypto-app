@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import type { CSSProperties, FC, ReactNode } from "react";
 
 // --- Tooltip props type ---
@@ -18,7 +17,7 @@ const DashboardTooltip: FC<DashboardTooltipProps> = ({
   style,
   onClose,
 }) => (
-  <motion.div
+  <div
     className="
       absolute
       left-1/2
@@ -37,10 +36,6 @@ const DashboardTooltip: FC<DashboardTooltipProps> = ({
       cursor-pointer
     "
     style={(style ?? {}) as CSSProperties}
-    initial={{ opacity: 0, y: 32 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: 32 }}
-    transition={{ duration: 1.4, ease: "easeOut" }}
     onClick={() => onClose?.()}
     tabIndex={0}
   >
@@ -110,7 +105,7 @@ const DashboardTooltip: FC<DashboardTooltipProps> = ({
         <path d="M14 16L0 0H28L14 16Z" fill="#0082D9" />
       </svg>
     </div>
-  </motion.div>
+  </div>
 );
 
 export default DashboardTooltip;
