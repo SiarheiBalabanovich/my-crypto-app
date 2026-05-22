@@ -2,7 +2,7 @@ import AboutIcon from "../assets/about-icon.svg?react";
 import MoodChartIcon from "../assets/mood-chart-icon.svg?react";
 import MoodPriceCorrelationIcon from "../assets/mood-price-correlation-icon.svg?react";
 import ProblemSolutionIcon from "../assets/problem-solution-icon.svg?react";
-import FeatureCard from "../widgets/landing/feature-card/FeatureCard";
+import FeatureCard from "../feature-card/feature-card";
 import aboutBg from "../assets/background about mood ai.png";
 
 // Type for cards

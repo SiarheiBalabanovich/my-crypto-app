@@ -12,7 +12,7 @@ type WalletPopupProps = {
   status: WalletPopupStatus;
   walletAddress?: string | undefined;
   onClose: () => void;
-  onTryAgain?: () => void;
+  onTryAgain?: (() => Promise<void>) | undefined;
   // TODO: You can add props for backend error codes/messages if needed.
 };
 

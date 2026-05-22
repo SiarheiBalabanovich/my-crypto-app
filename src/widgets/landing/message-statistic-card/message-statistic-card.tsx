@@ -48,7 +48,7 @@ const MessageStatisticCard: React.FC<MessageStatisticCardProps> = ({
 
   // TODO: use data from the backend (e.g. via props or context)
   const active = data.find((d) => d.label === selected) || data[0];
-  const centerValue = valueMap[active.label] || "29,876";
+  const centerValue = valueMap[active!.label] || "29,876";
 
   const CHART_SIZE_DESKTOP = 236;
   const CHART_STROKE_DESKTOP = 16;
@@ -60,7 +60,7 @@ const MessageStatisticCard: React.FC<MessageStatisticCardProps> = ({
     let start = 0;
     return data.map((item) => {
       const length = (item.value / 100) * CIRCLE;
-      const isActiveArc = item.label === active.label;
+      const isActiveArc = item.label === active!.label;
       const arc = (
         <circle
           key={item.label}
@@ -83,7 +83,7 @@ const MessageStatisticCard: React.FC<MessageStatisticCardProps> = ({
     });
   }
 
-  const activeBgColor = active.color;
+  const activeBgColor = active!.color;
   const activeTextColor = getTextColor(activeBgColor);
 
   const getActiveWidth = (label: string): number => (label === "Targeted" ? 134 : 111.37);
@@ -203,7 +203,7 @@ const MessageStatisticCard: React.FC<MessageStatisticCardProps> = ({
                     marginLeft: 8,
                   }}
                 >
-                  {active.value.toFixed(2)}%
+                  {active!.value.toFixed(2)}%
                 </span>
               </div>
               <span
@@ -215,7 +215,7 @@ const MessageStatisticCard: React.FC<MessageStatisticCardProps> = ({
                   marginTop: 12,
                 }}
               >
-                {active.label}
+                {active!.label}
               </span>
             </div>
           </div>
@@ -382,7 +382,7 @@ const MessageStatisticCard: React.FC<MessageStatisticCardProps> = ({
                     marginLeft: 6,
                   }}
                 >
-                  {active.value.toFixed(2)}%
+                  {active!.value.toFixed(2)}%
                 </span>
               </div>
               <span
@@ -394,7 +394,7 @@ const MessageStatisticCard: React.FC<MessageStatisticCardProps> = ({
                   marginTop: 8,
                 }}
               >
-                {active.label}
+                {active!.label}
               </span>
             </div>
           </div>
