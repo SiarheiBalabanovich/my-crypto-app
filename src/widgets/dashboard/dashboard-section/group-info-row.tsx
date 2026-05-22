@@ -1,6 +1,6 @@
-import MembersCard from "./MembersCard";
-import MessagesCard from "./MessagesCard";
-import MessageStatisticCard from "./MessageStatisticCard";
+import MembersCard from "../../landing/members-card/members-card";
+import MessagesCard from "../../landing/messages-card/messages-card";
+import MessageStatisticCard from "../../landing/message-statistic-card/message-statistic-card";
 
 // TODO: When backend API is ready, pass actual group info data as props to MembersCard, MessagesCard, and MessageStatisticCard.
 // For now, these components are rendered with layout only.

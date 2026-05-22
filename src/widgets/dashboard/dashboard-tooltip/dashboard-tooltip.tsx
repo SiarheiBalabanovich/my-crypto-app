@@ -1,16 +1,17 @@
 import { motion } from "framer-motion";
+import type { CSSProperties, FC, ReactNode } from "react";
 
 // --- Tooltip props type ---
 // TODO Udoop: If you need to render title/text/icon from API, just pass props with dynamic values from backend here.
 interface DashboardTooltipProps {
   title: string;
   text: string;
-  icon?: React.ReactNode;
-  style?: React.CSSProperties;
+  icon?: ReactNode;
+  style?: CSSProperties | undefined;
   onClose?: () => void;
 }
 
-const DashboardTooltip: React.FC<DashboardTooltipProps> = ({
+const DashboardTooltip: FC<DashboardTooltipProps> = ({
   title,
   text,
   icon,
@@ -35,7 +36,7 @@ const DashboardTooltip: React.FC<DashboardTooltipProps> = ({
       border-[#0082D9]
       cursor-pointer
     "
-    style={style}
+    style={(style ?? {}) as CSSProperties}
     initial={{ opacity: 0, y: 32 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: 32 }}

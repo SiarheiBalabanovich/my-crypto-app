@@ -8,7 +8,7 @@ export function useInViewOnce(threshold = 0.4) {
     if (!ref.current) return;
     const observer = new window.IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setInView(true);
+        if (entry?.isIntersecting) setInView(true);
       },
       { threshold }
     );
