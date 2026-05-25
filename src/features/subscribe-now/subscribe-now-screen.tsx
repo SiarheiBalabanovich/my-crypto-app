@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import UpgradeUnlockIcon from "../assets/upgrade-unlock-access-icon.svg?react";
+import UpgradeUnlockIcon from "../../assets/upgrade-unlock-access-icon.svg?react";
 
 // TODO: You can add props type when you integrate with backend
 // type SubscribeNowScreenProps = {

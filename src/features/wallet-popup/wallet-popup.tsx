@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import CloseIcon from "../assets/close-icon.svg?react";
-import ErrorIcon from "../assets/error-icon.svg?react";
-import SuccessIcon from "../assets/successfully-icon.svg?react";
+import CloseIcon from "../../assets/close-icon.svg?react";
+import ErrorIcon from "../../assets/error-icon.svg?react";
+import SuccessIcon from "../../assets/successfully-icon.svg?react";
 import SpinnerIcon from "../../shared/ui/spinner/spinner-icon";
 
 type WalletPopupStatus = "connecting" | "failed" | "success";
