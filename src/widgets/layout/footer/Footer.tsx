@@ -1,9 +1,9 @@
 import React from "react";
-import Logo from "../assets/moodai-icon.svg?react";
 import TelegramIcon from "../assets/telegram-icon.svg?react";
 import FacebookIcon from "../assets/facebook-icon.svg?react";
 import TwitterIcon from "../assets/twitter-icon.svg?react";
 import LinkedinIcon from "../assets/linkedin-icon.svg?react";
+import MoodAiIcon from "../../../assets/moodai-icon.svg?react";
 
 // Social link data type for possible backend expansion
 type SocialLink = {
@@ -63,7 +63,7 @@ const Footer: React.FC = () => (
         {/* Left side */}
         <div className="flex flex-col items-start">
           <div className="w-[194px] h-[24px]">
-            <Logo className="w-full h-full" />
+            <MoodAiIcon className="w-full h-full" />
           </div>
           <div className="mt-[64px]">
             <span
@@ -161,7 +161,7 @@ const Footer: React.FC = () => (
       <div className="flex flex-col w-full max-w-[390px] mx-auto">
         {/* Logo */}
         <div className="mt-[36px] ml-[24px] w-[146px] h-[32px]">
-          <Logo className="w-full h-full" />
+          <MoodAiIcon className="w-full h-full" />
         </div>
         {/* Follow Us */}
         <div className="mt-[48px] mb-[24px] ml-[24px] font-instrument text-[16px] leading-[24px]" style={{ color: COLOR_SOCIAL }}>
