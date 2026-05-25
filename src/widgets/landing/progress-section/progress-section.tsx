@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { progressSteps } from "./progress-steps";
 import { circleStyles } from "../../../shared/constants/progress-circles";
-import bgImage from "../assets/bg-progress-overview.png";
+import bgImage from "../../../assets/bg-progress-overview.png";
 
 // ===== TYPES =====
 type BezierPoint = { x: number; y: number };
