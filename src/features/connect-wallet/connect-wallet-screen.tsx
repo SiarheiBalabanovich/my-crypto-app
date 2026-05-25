@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import WalletIcon from '../assets/connect-wallet-icon.svg?react';
+import WalletIcon from "../../assets/connect-wallet-icon.svg?react";
 
 // TODO: Backend – replace text/logic if dynamic values are needed here.
 
