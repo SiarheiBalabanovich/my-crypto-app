@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MoodAiIcon from "../assets/moodai-icon.svg?react";
+import MoodAiIcon from "../../../assets/moodai-icon.svg?react";
 import { WalletPopup } from "../../../features/wallet-popup";
 
 
