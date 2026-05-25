@@ -1,8 +1,8 @@
 import React from "react";
-import TelegramIcon from "../assets/telegram-icon.svg?react";
-import FacebookIcon from "../assets/facebook-icon.svg?react";
-import TwitterIcon from "../assets/twitter-icon.svg?react";
-import LinkedinIcon from "../assets/linkedin-icon.svg?react";
+import TelegramIcon from "../../../assets/telegram-icon.svg?react";
+import FacebookIcon from "../../../assets/facebook-icon.svg?react";
+import TwitterIcon from "../../../assets/twitter-icon.svg?react";
+import LinkedinIcon from "../../../assets/linkedin-icon.svg?react";
 import MoodAiIcon from "../../../assets/moodai-icon.svg?react";
 
 // Social link data type for possible backend expansion
