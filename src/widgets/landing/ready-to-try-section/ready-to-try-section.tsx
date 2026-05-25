@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useState, useEffect } from "react";
 import Lottie from "lottie-react";
-import rocketIcon from "../assets/rocket-icon.svg";
+import rocketIcon from "../../../assets/rocket-icon.svg";
 import dashboardBg from "../assets/dashboard-get-started.png";
 import starEmoji from "../assets/star-emoji.json";
 import moneyEmoji from "../assets/money-emoji.json";
