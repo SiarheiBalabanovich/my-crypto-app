@@ -1,4 +1,4 @@
-import LockIcon from "../assets/lock.svg?react";
+import LockIcon from "../../../assets/lock.svg?react";
 
 // TODO: In the future, fetch notification state or user email from API when backend is ready.
 
