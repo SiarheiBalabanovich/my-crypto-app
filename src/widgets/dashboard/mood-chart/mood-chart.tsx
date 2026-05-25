@@ -1,7 +1,7 @@
-import MoodAiElementIcon from "../assets/moodai-element-icon.png";
-import CheckboxMood from "../assets/checkbox-mood.svg?react";
-import CheckboxPrice from "../assets/checkbox-price.svg?react";
-import CheckboxEngagement from "../assets/checkbox-engagement.svg?react";
+import MoodAiElementIcon from "../../../assets/moodai-element-icon.png";
+import CheckboxMood from "../../../assets/checkbox-mood.svg?react";
+import CheckboxPrice from "../../../assets/checkbox-price.svg?react";
+import CheckboxEngagement from "../../../assets/checkbox-engagement.svg?react";
 import type { TooltipProps } from "recharts";
 import {
   LineChart,
