@@ -3,16 +3,16 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../layout/header/Header";
 import SearchBar from "../../../features/search-crypto/search-crypto";
 import CryptoCard from "../../../entities/crypto/ui/crypto-card";
-import bgHeroSection from "../assets/bg-hero-section.webp";
-import guruImage from '../assets/GURU.png';
-import dgbImage from '../assets/DGB.png';
-import evaImage from '../assets/eVa.png';
-import moodImage from '../assets/MOOD.png';
-import mood2Image from '../assets/MOOD-2.png';
-import oscaImage from '../assets/OSCA.png';
-import GetSignalsIcon from '../assets/get-signals-icon.svg?react';
-import TrustedIcon from '../assets/trusted-icon.svg?react';
-import ReactToTrendsIcon from '../assets/react-to-trends-instantly-icon.svg?react';
+import bgHeroSection from "../../../assets/bg-hero-section.webp";
+import guruImage from '../../../assets/GURU.png';
+import dgbImage from '../../../assets/DGB.png';
+import evaImage from '../../../assets/eVa.png';
+import moodImage from '../../../assets/MOOD.png';
+import mood2Image from '../../../assets/MOOD-2.png';
+import oscaImage from '../../../assets/OSCA.png';
+import GetSignalsIcon from '../../../assets/get-signals-icon.svg?react';
+import TrustedIcon from '../../../assets/trusted-icon.svg?react';
+import ReactToTrendsIcon from '../../../assets/react-to-trends-instantly-icon.svg?react';
 
 // Type for map data
 type CardData = {
