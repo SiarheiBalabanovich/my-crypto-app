@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MoodAiLogo from "../assets/moodai-icon.svg?react";
+import MoodAiLogo from "../../../assets/moodai-icon.svg?react";
 import { WalletPopup } from "../../../features/wallet-popup";
 
 // TODO: Implement real wallet connection logic here, replace this mockup with actual API call or wallet provider integration.
