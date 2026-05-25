@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import zzzAnimation from "../assets/sleeping-emoji.json";
+import zzzAnimation from "../../../assets/sleeping-emoji.json";
 
 // --- TYPE DEFINITIONS ---
 type TriangleProps = {
