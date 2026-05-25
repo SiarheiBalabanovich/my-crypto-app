@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SealCheckIcon from '../assets/sealcheck-icon.svg?react';
+import SealCheckIcon from "../assets/sealcheck-icon.svg?react";
 
 // TODO: (for backend integration): You can add props for dynamic messages or loading states here.
 //Example: { message?: string }
