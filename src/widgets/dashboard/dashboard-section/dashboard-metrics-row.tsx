@@ -1,4 +1,4 @@
-import MoodAiElementIcon from "../../../../assets/moodai-element-icon.png";
+import MoodAiElementIcon from "../../../assets/moodai-element-icon.png";
 
 export default function DashboardMetricsRow() {
   // TODO: Example. Replace these values below with real API state.
