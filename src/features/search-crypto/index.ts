@@ -1,1 +1,1 @@
-export * from './search-crypto';
+export { default as SearchBar } from "./search-crypto";
