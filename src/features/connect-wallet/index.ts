@@ -1,1 +1,1 @@
-export * from './connect-wallet-screen';
+export { default as ConnectWalletScreen } from "./connect-wallet-screen";
