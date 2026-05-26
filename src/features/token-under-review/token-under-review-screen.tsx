@@ -1,28 +1,54 @@
 import { useEffect, useState } from "react";
+
 import SealCheckIcon from "../../assets/sealcheck-icon.svg?react";
 
-// TODO: (for backend integration): You can add props for dynamic messages or loading states here.
-//Example: { message?: string }
+// TODO: Add backend-driven props or review status integration if needed.
+// Example:
+// type TokenUnderReviewScreenProps = {
+//   message?: string;
+// };
 
 const DASHBOARD_MAX_WIDTH = 1376;
 const MOBILE_MAX_WIDTH = 1349;
 
-export default function TokenUnderReviewScreen() {
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1920
-  );
+const REVIEW_TITLE = "TOKEN IS UNDER REVIEW";
+const REVIEW_DESCRIPTION = "Please check in later";
+
+const useIsMobile = (breakpoint: number): boolean => {
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return window.innerWidth <= breakpoint;
+  });
 
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    const handleResize = (): void => {
+      setIsMobile(window.innerWidth <= breakpoint);
+    };
 
-  // Mobile + Tablet Layout
-  if (windowWidth <= MOBILE_MAX_WIDTH) {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [breakpoint]);
+
+  return isMobile;
+};
+
+export default function TokenUnderReviewScreen() {
+  const isMobile = useIsMobile(MOBILE_MAX_WIDTH);
+
+  if (isMobile) {
     return (
       <div
-        className="w-full flex items-center justify-center z-20 pointer-events-auto"
+        className="
+          pointer-events-auto
+          z-20
+          flex w-full items-center justify-center
+        "
         style={{
           maxWidth: 342,
           marginLeft: "auto",
@@ -30,23 +56,57 @@ export default function TokenUnderReviewScreen() {
           marginTop: "100px",
         }}
       >
-        <div className="flex flex-col items-center justify-center w-full h-full px-4 py-8 bg-white/10 rounded-[8px]">
-          <SealCheckIcon className="mb-4 w-14 h-14 text-[#C9E2FF]" />
-          <span className="text-white text-[28px] leading-[32px] font-instrument font-bold tracking-[0.2em] text-center mb-4 mt-0">
-            TOKEN IS UNDER REVIEW
+        <div
+          className="
+            flex h-full w-full flex-col
+            items-center justify-center
+            rounded-[8px]
+            bg-white/10
+            px-4 py-8
+          "
+        >
+          <SealCheckIcon className="mb-4 h-14 w-14 text-[#C9E2FF]" />
+
+          <span
+            className="
+              mt-0 mb-4
+              text-center
+              font-instrument
+              text-[28px]
+              font-bold
+              leading-[32px]
+              tracking-[0.2em]
+              text-white
+            "
+          >
+            {REVIEW_TITLE}
           </span>
-          <span className="text-[#C9E2FF] text-[16px] leading-[24px] font-normal font-instrument text-center max-w-[400px] mt-0">
-            Please check in later
+
+          <span
+            className="
+              mt-0 max-w-[400px]
+              text-center
+              font-instrument
+              text-[16px]
+              font-normal
+              leading-[24px]
+              text-[#C9E2FF]
+            "
+          >
+            {REVIEW_DESCRIPTION}
           </span>
         </div>
       </div>
     );
   }
 
-  // Desktop Layout
   return (
     <div
-      className="absolute left-1/2 z-20 pointer-events-auto justify-center items-center flex"
+      className="
+        pointer-events-auto
+        absolute left-1/2 z-20
+        flex items-center justify-center
+      "
       style={{
         width: "100%",
         maxWidth: DASHBOARD_MAX_WIDTH,
@@ -57,13 +117,36 @@ export default function TokenUnderReviewScreen() {
         borderRadius: 16,
       }}
     >
-      <div className="flex flex-col items-center justify-center w-full h-full">
-        <SealCheckIcon className="mb-6 w-20 h-20 text-[#C9E2FF]" />
-        <span className="text-white text-[36px] leading-[42px] font-instrument font-bold tracking-[0.2em] text-center mb-4 mt-0">
-          TOKEN IS UNDER REVIEW
+      <div className="flex h-full w-full flex-col items-center justify-center">
+        <SealCheckIcon className="mb-6 h-20 w-20 text-[#C9E2FF]" />
+
+        <span
+          className="
+            mt-0 mb-4
+            text-center
+            font-instrument
+            text-[36px]
+            font-bold
+            leading-[42px]
+            tracking-[0.2em]
+            text-white
+          "
+        >
+          {REVIEW_TITLE}
         </span>
-        <span className="text-[#C9E2FF] text-[20px] leading-[28px] font-normal font-instrument text-center max-w-[500px] mt-0">
-          Please check in later
+
+        <span
+          className="
+            mt-0 max-w-[500px]
+            text-center
+            font-instrument
+            text-[20px]
+            font-normal
+            leading-[28px]
+            text-[#C9E2FF]
+          "
+        >
+          {REVIEW_DESCRIPTION}
         </span>
       </div>
     </div>

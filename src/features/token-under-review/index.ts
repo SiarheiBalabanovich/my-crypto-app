@@ -1,1 +1,1 @@
-export * from './token-under-review-screen';
+export { default as TokenUnderReviewScreen } from "./token-under-review-screen";
