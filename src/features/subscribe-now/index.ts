@@ -1,1 +1,1 @@
-export * from './subscribe-now-screen';
+export { default as SubscribeNowScreen } from "./subscribe-now-screen";
