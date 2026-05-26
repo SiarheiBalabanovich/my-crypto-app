@@ -1,1 +1,1 @@
-export { default as WalletPopup } from './wallet-popup';
+export { default as WalletPopup } from "./wallet-popup";
