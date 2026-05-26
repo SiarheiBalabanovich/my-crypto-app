@@ -14,9 +14,9 @@ type WalletPopupStatus = "connecting" | "failed" | "success";
 type WalletPopupProps = {
   open: boolean;
   status: WalletPopupStatus;
-  walletAddress?: string;
+  walletAddress?: string | undefined;
   onClose: () => void;
-  onTryAgain?: () => Promise<void>;
+  onTryAgain?: (() => Promise<void>) | undefined;
 };
 
 type PopupSize = {
