@@ -1,1 +1,1 @@
-export * from './use-in-view-once';
+export { useInViewOnce } from "./use-in-view-once";
