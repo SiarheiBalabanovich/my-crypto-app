@@ -1,1 +1,1 @@
-export * from './spinner-icon';
+export { default as SpinnerIcon } from "./spinner-icon";

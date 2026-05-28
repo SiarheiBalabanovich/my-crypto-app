@@ -1,1 +1,1 @@
-export * from './dashboard-header-bar';
+export { default as DashboardHeaderBar } from "./dashboard-header-bar";

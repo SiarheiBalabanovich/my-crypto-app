@@ -1,19 +1,27 @@
 type SpinnerIconProps = {
   size?: number;
+  title?: string;
+  className?: string;
 };
 
-export default function SpinnerIcon({ size = 56 }: SpinnerIconProps) {
-  // TODO: If you want to show spinner only during backend loading,
+const DEFAULT_SPINNER_SIZE = 56;
+const VIEW_BOX_SIZE = 56;
 
+export default function SpinnerIcon({
+  size = DEFAULT_SPINNER_SIZE,
+  title = "Loading",
+  className = "",
+}: SpinnerIconProps) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 56 56"
+      viewBox={`0 0 ${VIEW_BOX_SIZE} ${VIEW_BOX_SIZE}`}
       fill="none"
-      className="animate-spin"
+      className={`animate-spin ${className}`}
       style={{ display: "block" }}
-      aria-label="Loading"
+      role="status"
+      aria-label={title}
     >
       <circle
         cx="28"
@@ -23,6 +31,7 @@ export default function SpinnerIcon({ size = 56 }: SpinnerIconProps) {
         strokeWidth={7}
         fill="none"
       />
+
       <g stroke="#C9E2FF" strokeWidth={4} strokeLinecap="round">
         <line x1="28" y1="6" x2="28" y2="15" />
         <line x1="28" y1="41" x2="28" y2="50" />
