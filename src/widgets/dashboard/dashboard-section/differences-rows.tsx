@@ -1,76 +1,99 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+
 import DashboardTooltip from "../dashboard-tooltip/dashboard-tooltip";
 
-// --- Types for (Differences) ---
-// TODO Udoop: Replace with API response when backend is ready
+type DifferenceType = "mood" | "engagement";
+type DifferenceTitle = "Mood Differences" | "Engagement Differences";
+
 type Difference = {
   label: string;
   percent: string;
   time: string;
 };
 
-const moodDifferences: Difference[] = [
-  { label: "+10", percent: "+0.13%", time: "1 hour" },
-  { label: "+20", percent: "+0.13%", time: "1 day" },
-  { label: "+30", percent: "+0.13%", time: "1 week" },
-];
-
-const engagementDifferences: Difference[] = [
-  { label: "+10", percent: "+0.13%", time: "1 hour" },
-  { label: "+20", percent: "+0.13%", time: "1 day" },
-  { label: "+30", percent: "+0.13%", time: "1 week" },
-];
-
-// --- Tooltip descriptions ---
-// TODO Udoop: Can be replaced with backend data
-const tooltipData: Record<string, { text: string }> = {
-  "Mood Differences": {
-    text: "Mood Differences show how the overall sentiment in the token’s Telegram group has changed over time.",
-  },
-  "Engagement Differences": {
-    text: "Engagement Differences reflect how actively people are interacting in the group — messages, reactions, and overall activity.",
-  },
+type DifferenceConfig = {
+  type: DifferenceType;
+  title: DifferenceTitle;
+  mobileTitle: ReactNode;
+  differences: Difference[];
+  tooltipText: string;
 };
 
-// --- Desktop card for differences ---
-interface DifferencesCardProps {
-  title: "Mood Differences" | "Engagement Differences";
-}
+type TooltipState = Record<DifferenceType, boolean>;
 
-const DifferencesCard: React.FC<DifferencesCardProps> = ({ title }) => {
-  const differences = title === "Mood Differences" ? moodDifferences : engagementDifferences;
-  const [showTooltip, setShowTooltip] = useState(false);
+const TABLET_MIN_WIDTH = 640;
 
-  const headerStyle: React.CSSProperties = {
-    color: "#4F6175",
-    fontFamily: "Instrument Sans, sans-serif",
+const COLORS = {
+  background: "#070D11",
+  title: "#4F6175",
+  value: "#C9E2FF",
+  positive: "#239F2E",
+  info: "#90EB43",
+} as const;
+
+const FONT_FAMILY = "Instrument Sans, sans-serif";
+
+const DIFFERENCES: Difference[] = [
+  { label: "+10", percent: "+0.13%", time: "1 hour" },
+  { label: "+20", percent: "+0.13%", time: "1 day" },
+  { label: "+30", percent: "+0.13%", time: "1 week" },
+];
+
+const DIFFERENCE_CONFIGS: DifferenceConfig[] = [
+  {
+    type: "mood",
+    title: "Mood Differences",
+    mobileTitle: (
+      <>
+        Mood
+        <br />
+        Differences
+      </>
+    ),
+    differences: DIFFERENCES,
+    tooltipText:
+      "Mood Differences show how the overall sentiment in the token’s Telegram group has changed over time.",
+  },
+  {
+    type: "engagement",
+    title: "Engagement Differences",
+    mobileTitle: "Engagement Differences",
+    differences: DIFFERENCES,
+    tooltipText:
+      "Engagement Differences reflect how actively people are interacting in the group — messages, reactions, and overall activity.",
+  },
+];
+
+const desktopStyles = {
+  header: {
+    color: COLORS.title,
+    fontFamily: FONT_FAMILY,
     fontWeight: 400,
     fontSize: 14,
     lineHeight: "26px",
-  };
-  const numberStyle: React.CSSProperties = {
-    color: "#C9E2FF",
-    fontFamily: "Instrument Sans, sans-serif",
+  },
+  number: {
+    color: COLORS.value,
+    fontFamily: FONT_FAMILY,
     fontWeight: 500,
     fontSize: 32,
     lineHeight: "28px",
-  };
-  const percentStyle: React.CSSProperties = {
-    color: "#239F2E",
-    fontFamily: "Instrument Sans, sans-serif",
+  },
+  percent: {
+    color: COLORS.positive,
+    fontFamily: FONT_FAMILY,
     fontWeight: 400,
     fontSize: 14,
     lineHeight: "16px",
-  };
-  const timeStyle: React.CSSProperties = {
-    color: "#4F6175",
-    fontFamily: "Instrument Sans, sans-serif",
+  },
+  time: {
+    color: COLORS.title,
+    fontFamily: FONT_FAMILY,
     fontWeight: 400,
     fontSize: 14,
     lineHeight: "26px",
-  };
-
-  const tooltipStyle: React.CSSProperties = {
+  },
+  tooltip: {
     position: "absolute",
     top: 40,
     left: -60,
@@ -78,6 +101,215 @@ const DifferencesCard: React.FC<DifferencesCardProps> = ({ title }) => {
     minWidth: 240,
     maxWidth: 340,
     cursor: "pointer",
+  },
+} as const satisfies Record<string, CSSProperties>;
+
+const mobileStyles = {
+  tooltip: {
+    position: "absolute",
+    top: 34,
+    left: 24,
+    zIndex: 99,
+    minWidth: 180,
+    maxWidth: 260,
+    cursor: "pointer",
+  },
+  disabledInfo: {
+    pointerEvents: "none",
+    opacity: 0.65,
+  },
+} as const satisfies Record<string, CSSProperties>;
+
+const mobileClassNames = {
+  title: "text-[12px] font-instrument text-[#4F6175] font-normal",
+  number: "text-[28px] font-instrument font-medium text-[#C9E2FF]",
+  percent: "text-[12px] font-instrument text-[#239F2E] font-normal",
+  time: "text-[12px] font-instrument text-[#4F6175] font-normal mt-1",
+} as const;
+
+const createInitialTooltipState = (): TooltipState => ({
+  mood: false,
+  engagement: false,
+});
+
+const useWindowWidth = (defaultWidth = 1200): number => {
+  const [windowWidth, setWindowWidth] = useState<number>(() => {
+    if (typeof window === "undefined") {
+      return defaultWidth;
+    }
+
+    return window.innerWidth;
+  });
+
+  useEffect(() => {
+    const handleResize = (): void => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return windowWidth;
+};
+
+function GrowthTriangle({
+  className = "",
+  style = {},
+}: {
+  className?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <svg
+      width={8}
+      height={6}
+      className={className}
+      style={style}
+      viewBox="0 0 8 6"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <polygon points="4,1 8,6 0,6" fill={COLORS.positive} />
+    </svg>
+  );
+}
+
+function InfoButton({
+  disabled = false,
+  onClick,
+}: {
+  disabled?: boolean;
+  onClick: () => void;
+}) {
+  const handleClick = (): void => {
+    if (disabled) {
+      return;
+    }
+
+    onClick();
+  };
+
+  return (
+    <span
+      className="text-[#90EB43] text-[14px] w-[14px] h-[14px] inline-flex items-center justify-center leading-[14px] cursor-pointer select-none xlm:text-xl xlm:w-auto xlm:h-auto"
+      onClick={handleClick}
+      tabIndex={disabled ? -1 : 0}
+      role="button"
+      aria-label="Show info"
+      style={disabled ? mobileStyles.disabledInfo : {}}
+    >
+      ⓘ
+    </span>
+  );
+}
+
+function TooltipWrapper({
+  title,
+  text,
+  style,
+  onClose,
+}: {
+  title: DifferenceTitle;
+  text: string;
+  style: CSSProperties;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      style={style}
+      onClick={onClose}
+      tabIndex={0}
+      role="button"
+      aria-label="Close tooltip"
+    >
+      <DashboardTooltip title={title} text={text} icon={null} onClose={onClose} />
+    </div>
+  );
+}
+
+function DifferenceValueList({
+  differences,
+  variant,
+}: {
+  differences: Difference[];
+  variant: "desktop" | "mobile";
+}) {
+  const isDesktop = variant === "desktop";
+
+  return (
+    <>
+      {differences.map((difference) => (
+        <div
+          key={`${difference.label}-${difference.time}`}
+          className={
+            isDesktop
+              ? "flex flex-col items-start"
+              : "flex flex-col items-start mb-2"
+          }
+          style={isDesktop ? { minWidth: 100 } : {}}
+        >
+          <div className="flex items-center">
+            <span
+              className={isDesktop ? "" : mobileClassNames.number}
+              style={isDesktop ? desktopStyles.number : {}}
+            >
+              {difference.label}
+            </span>
+
+            <GrowthTriangle
+              className={isDesktop ? "" : "mx-1"}
+              style={
+                isDesktop
+                  ? {
+                      marginLeft: 6,
+                      marginRight: 4,
+                      display: "inline-block",
+                    }
+                  : {}
+              }
+            />
+
+            <span
+              className={isDesktop ? "" : mobileClassNames.percent}
+              style={isDesktop ? desktopStyles.percent : {}}
+            >
+              {difference.percent}
+            </span>
+          </div>
+
+          <span
+            className={
+              isDesktop
+                ? "mt-[10px] block text-left w-full"
+                : mobileClassNames.time
+            }
+            style={isDesktop ? desktopStyles.time : {}}
+          >
+            {difference.time}
+          </span>
+        </div>
+      ))}
+    </>
+  );
+}
+
+function DesktopDifferencesCard({
+  config,
+}: {
+  config: DifferenceConfig;
+}) {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const closeTooltip = (): void => {
+    setShowTooltip(false);
+  };
+
+  const toggleTooltip = (): void => {
+    setShowTooltip((currentValue) => !currentValue);
   };
 
   return (
@@ -91,221 +323,120 @@ const DifferencesCard: React.FC<DifferencesCardProps> = ({ title }) => {
       }}
     >
       <div className="flex justify-between items-center mb-2">
-        <span style={headerStyle}>{title}</span>
-        <>
-          <span
-            className="text-[#90EB43] text-xl cursor-pointer select-none"
-            onClick={() => setShowTooltip((v) => !v)}
-            tabIndex={0}
-            role="button"
-            aria-label="Show info"
-          >
-            ⓘ
-          </span>
+        <span style={desktopStyles.header}>{config.title}</span>
+
+        <div className="relative">
+          <InfoButton onClick={toggleTooltip} />
+
           {showTooltip && (
-            <div
-              style={tooltipStyle}
-              onClick={() => setShowTooltip(false)}
-              tabIndex={0}
-              role="button"
-              aria-label="Close tooltip"
-            >
-              <DashboardTooltip
-                title={title}
-                text={tooltipData[title]!.text}
-                icon={null}
-                onClose={() => setShowTooltip(false)}
-              />
-            </div>
+            <TooltipWrapper
+              title={config.title}
+              text={config.tooltipText}
+              style={desktopStyles.tooltip}
+              onClose={closeTooltip}
+            />
           )}
-        </>
+        </div>
       </div>
+
       <div className="flex justify-between w-full mt-2">
-        {differences.map((diff) => (
-          <div
-            key={diff.label}
-            className="flex flex-col items-start"
-            style={{ minWidth: 100 }}
-          >
-            <div className="flex items-center">
-              <span style={numberStyle}>{diff.label}</span>
-              <svg
-                width={8}
-                height={6}
-                style={{ marginLeft: 6, marginRight: 4, display: "inline-block" }}
-                viewBox="0 0 8 6"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <polygon points="4,1 8,6 0,6" fill="#239F2E" />
-              </svg>
-              <span style={percentStyle}>{diff.percent}</span>
-            </div>
-            <span
-              style={timeStyle}
-              className="mt-[10px] block text-left w-full"
-            >
-              {diff.time}
-            </span>
-          </div>
-        ))}
+        <DifferenceValueList differences={config.differences} variant="desktop" />
       </div>
     </div>
   );
-};
+}
 
-// --- Mobile/tablet --- //
-const DifferencesMobile: React.FC = () => {
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200
+function MobileDifferencesCard({
+  config,
+  canShowTooltip,
+  showTooltip,
+  onToggleTooltip,
+  onCloseTooltip,
+}: {
+  config: DifferenceConfig;
+  canShowTooltip: boolean;
+  showTooltip: boolean;
+  onToggleTooltip: () => void;
+  onCloseTooltip: () => void;
+}) {
+  return (
+    <div className="flex-1 bg-[#070D11] rounded-[8px] py-2 px-1 flex flex-col relative">
+      <div className="flex items-center justify-between mb-2 relative">
+        <span className={mobileClassNames.title}>{config.mobileTitle}</span>
+
+        <InfoButton disabled={!canShowTooltip} onClick={onToggleTooltip} />
+
+        {showTooltip && canShowTooltip && (
+          <TooltipWrapper
+            title={config.title}
+            text={config.tooltipText}
+            style={mobileStyles.tooltip}
+            onClose={onCloseTooltip}
+          />
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <DifferenceValueList differences={config.differences} variant="mobile" />
+      </div>
+    </div>
   );
-  const [showTooltipMood, setShowTooltipMood] = useState(false);
-  const [showTooltipEng, setShowTooltipEng] = useState(false);
+}
 
-  useEffect(() => {
-    const onResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
+function DifferencesMobile() {
+  const windowWidth = useWindowWidth();
+  const canShowTooltip = windowWidth >= TABLET_MIN_WIDTH;
 
-  const canShowTooltip = windowWidth >= 640;
+  const [tooltipState, setTooltipState] = useState<TooltipState>(
+    createInitialTooltipState,
+  );
 
-  const cardTitleStyle =
-    "text-[12px] font-instrument text-[#4F6175] font-normal";
-  const numberStyle =
-    "text-[28px] font-instrument font-medium text-[#C9E2FF]";
-  const percentStyle =
-    "text-[12px] font-instrument text-[#239F2E] font-normal";
-  const timeStyle =
-    "text-[12px] font-instrument text-[#4F6175] font-normal mt-1";
+  const toggleTooltip = (type: DifferenceType): void => {
+    if (!canShowTooltip) {
+      return;
+    }
 
-  // Tooltip coordinates
-  const tooltipStyle: React.CSSProperties = {
-    position: "absolute",
-    top: 34,
-    left: 24,
-    zIndex: 99,
-    minWidth: 180,
-    maxWidth: 260,
-    cursor: "pointer",
+    setTooltipState((currentState) => ({
+      ...currentState,
+      [type]: !currentState[type],
+    }));
+  };
+
+  const closeTooltip = (type: DifferenceType): void => {
+    setTooltipState((currentState) => ({
+      ...currentState,
+      [type]: false,
+    }));
   };
 
   return (
     <div className="flex w-full gap-8 relative">
-      {/* Mood Differences */}
-      <div className="flex-1 bg-[#070D11] rounded-[8px] py-2 px-1 flex flex-col relative">
-        <div className="flex items-center justify-between mb-2 relative">
-          <span className={cardTitleStyle}>
-            Mood
-            <br />
-            Differences
-          </span>
-          <span
-            className="text-[#90EB43] text-[14px] w-[14px] h-[14px] inline-flex items-center justify-center leading-[14px] cursor-pointer select-none"
-            onClick={() => canShowTooltip && setShowTooltipMood(v => !v)}
-            tabIndex={canShowTooltip ? 0 : -1}
-            role="button"
-            aria-label="Show info"
-            style={canShowTooltip ? {} : { pointerEvents: "none", opacity: 0.65 }}
-          >
-            ⓘ
-          </span>
-          {showTooltipMood && canShowTooltip && (
-            <div
-              style={tooltipStyle}
-              onClick={() => setShowTooltipMood(false)}
-              tabIndex={0}
-              role="button"
-              aria-label="Close tooltip"
-            >
-              <DashboardTooltip
-                title="Mood Differences"
-                text={tooltipData["Mood Differences"]!.text}
-                icon={null}
-                onClose={() => setShowTooltipMood(false)}
-              />
-            </div>
-          )}
-        </div>
-        <div className="flex flex-col gap-2">
-          {moodDifferences.map((diff) => (
-            <div key={diff.label} className="flex flex-col items-start mb-2">
-              <div className="flex items-center">
-                <span className={numberStyle}>{diff.label}</span>
-                <svg width={8} height={6} className="mx-1" viewBox="0 0 8 6" fill="none">
-                  <polygon points="4,1 8,6 0,6" fill="#239F2E" />
-                </svg>
-                <span className={percentStyle}>{diff.percent}</span>
-              </div>
-              <span className={timeStyle}>{diff.time}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* Engagement Differences */}
-      <div className="flex-1 bg-[#070D11] rounded-[8px] py-2 px-1 flex flex-col relative">
-        <div className="flex items-center justify-between mb-2 relative">
-          <span className={cardTitleStyle}>Engagement Differences</span>
-          <span
-            className="text-[#90EB43] text-[14px] w-[14px] h-[14px] inline-flex items-center justify-center leading-[14px] cursor-pointer select-none"
-            onClick={() => canShowTooltip && setShowTooltipEng(v => !v)}
-            tabIndex={canShowTooltip ? 0 : -1}
-            role="button"
-            aria-label="Show info"
-            style={canShowTooltip ? {} : { pointerEvents: "none", opacity: 0.65 }}
-          >
-            ⓘ
-          </span>
-          {showTooltipEng && canShowTooltip && (
-            <div
-              style={tooltipStyle}
-              onClick={() => setShowTooltipEng(false)}
-              tabIndex={0}
-              role="button"
-              aria-label="Close tooltip"
-            >
-              <DashboardTooltip
-                title="Engagement Differences"
-                text={tooltipData["Engagement Differences"]!.text}
-                icon={null}
-                onClose={() => setShowTooltipEng(false)}
-              />
-            </div>
-          )}
-        </div>
-        <div className="flex flex-col gap-2">
-          {engagementDifferences.map((diff) => (
-            <div key={diff.label} className="flex flex-col items-start mb-2">
-              <div className="flex items-center">
-                <span className={numberStyle}>{diff.label}</span>
-                <svg width={8} height={6} className="mx-1" viewBox="0 0 8 6" fill="none">
-                  <polygon points="4,1 8,6 0,6" fill="#239F2E" />
-                </svg>
-                <span className={percentStyle}>{diff.percent}</span>
-              </div>
-              <span className={timeStyle}>{diff.time}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      {DIFFERENCE_CONFIGS.map((config) => (
+        <MobileDifferencesCard
+          key={config.type}
+          config={config}
+          canShowTooltip={canShowTooltip}
+          showTooltip={tooltipState[config.type]}
+          onToggleTooltip={() => toggleTooltip(config.type)}
+          onCloseTooltip={() => closeTooltip(config.type)}
+        />
+      ))}
     </div>
   );
-};
+}
 
-const DifferencesRows: React.FC = () => {
+export default function DifferencesRows() {
   return (
     <>
-      {/* Desktop/tablet */}
       <div className="hidden xlm:flex flex-col gap-4">
-        <DifferencesCard title="Mood Differences" />
-        <DifferencesCard title="Engagement Differences" />
+        {DIFFERENCE_CONFIGS.map((config) => (
+          <DesktopDifferencesCard key={config.type} config={config} />
+        ))}
       </div>
-      {/* Mobile */}
+
       <div className="flex xlm:hidden w-full">
         <DifferencesMobile />
       </div>
     </>
   );
-};
-
-export default DifferencesRows;
+}
