@@ -1,1 +1,1 @@
-export * from './dashboard-tooltip';
+export { default as DashboardTooltip } from "./dashboard-tooltip";
