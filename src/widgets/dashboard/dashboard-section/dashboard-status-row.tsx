@@ -1,76 +1,362 @@
 import Lottie from "lottie-react";
+
 import zzzAnimation from "../../../assets/sleeping-emoji.json";
 
-// --- TYPE DEFINITIONS ---
-type TriangleProps = {
-  up: boolean;
+type TrendDirection = "up" | "down";
+
+type Trend = {
+  value: string;
+  direction: TrendDirection;
   color: string;
 };
 
-type StatusItem = {
+type DesktopStatusItem = {
   label: string;
   value: string;
   icon?: string;
-  bigIcon?: boolean;
-  valueClass?: string;
+  showBigIcon?: boolean;
   width: number;
-  sub?: string;
-  subUp?: boolean;
-  subColor?: string;
+  trend?: Trend;
 };
 
-// TODO: Replace this array with API data fetched from backend.
-const status: StatusItem[] = [
+type MobileStatusItem = {
+  label: string;
+  value: string;
+  icon?: string;
+  trend?: Trend;
+  width: number;
+  labelClassName?: string;
+  labelStyle?: React.CSSProperties;
+};
+
+const FONT_FAMILY = "Instrument Sans, sans-serif";
+
+const COLORS = {
+  label: "#4F6175",
+  value: "#C9E2FF",
+  positive: "#239F2E",
+  negative: "#CD2A2A",
+  background: "#070D11",
+} as const;
+
+const DESKTOP_STATUS_ITEMS: DesktopStatusItem[] = [
   {
     label: "Mood Assessment",
     value: "Not much going on",
     icon: "😴",
-    bigIcon: true,
-    valueClass: "#C9E2FF",
+    showBigIcon: true,
     width: 484,
   },
   {
     label: "Mood Score",
     value: "-0.31",
-    sub: "-0.17%",
-    subUp: false,
-    subColor: "#CD2A2A",
+    trend: {
+      value: "-0.17%",
+      direction: "down",
+      color: COLORS.negative,
+    },
     width: 180,
   },
   {
     label: "Engagement Assessment",
     value: "Not much going on",
     icon: "😴",
-    bigIcon: false,
-    valueClass: "#C9E2FF",
     width: 484,
   },
   {
     label: "Engagement Score",
     value: "0.78",
-    sub: "+6.22%",
-    subUp: true,
-    subColor: "#239F2E",
+    trend: {
+      value: "+6.22%",
+      direction: "up",
+      color: COLORS.positive,
+    },
     width: 180,
-  }
+  },
 ];
 
-function Triangle({ up, color }: TriangleProps) {
-  return up ? (
-    <svg width="14" height="14" style={{ marginRight: 4 }}>
-      <polygon points="7,2 1,12 13,12" fill={color} />
-    </svg>
-  ) : (
-    <svg width="14" height="14" style={{ marginRight: 4 }}>
-      <polygon points="7,12 1,2 13,2" fill={color} />
+const MOBILE_STATUS_ROWS: MobileStatusItem[][] = [
+  [
+    {
+      label: "Mood Assessment",
+      value: "Not much going on",
+      icon: "😴",
+      width: 200,
+      labelClassName:
+        "text-[#4F6175] font-instrument font-normal text-[12px] leading-[22px] mt-[35px] mb-[20px]",
+    },
+    {
+      label: "Mood Score",
+      value: "-0.31",
+      width: 158,
+      trend: {
+        value: "-0.17%",
+        direction: "down",
+        color: COLORS.negative,
+      },
+      labelClassName:
+        "text-[#4F6175] font-normal font-instrument text-[12px] leading-[22px] mt-[35px] mb-[35px]",
+    },
+  ],
+  [
+    {
+      label: "Engagement Assessment",
+      value: "Not much going on",
+      icon: "😴",
+      width: 200,
+      labelClassName:
+        "text-[#4F6175] font-normal font-instrument text-[12px] leading-[22px] mb-5",
+    },
+    {
+      label: "Engagement\nScore",
+      value: "0.78",
+      width: 158,
+      trend: {
+        value: "+6.22%",
+        direction: "up",
+        color: COLORS.positive,
+      },
+      labelClassName:
+        "text-[#4F6175] font-normal font-instrument text-[12px] leading-[22px] mb-5",
+      labelStyle: {
+        whiteSpace: "pre-line",
+      },
+    },
+  ],
+];
+
+function TrendTriangle({
+  direction,
+  color,
+}: {
+  direction: TrendDirection;
+  color: string;
+}) {
+  const points =
+    direction === "up"
+      ? "7,2 1,12 13,12"
+      : "7,12 1,2 13,2";
+
+  return (
+    <svg width={14} height={14} style={{ marginRight: 4 }}>
+      <polygon points={points} fill={color} />
     </svg>
   );
 }
 
-const DashboardStatusRow: React.FC = () => {
+function TrendValue({
+  trend,
+  fontSize,
+  lineHeight,
+  alignItems = "center",
+}: {
+  trend: Trend;
+  fontSize: number;
+  lineHeight: string;
+  alignItems?: React.CSSProperties["alignItems"];
+}) {
+  return (
+    <span className="flex items-center ml-2" style={{ alignItems }}>
+      <TrendTriangle direction={trend.direction} color={trend.color} />
+
+      <span
+        style={{
+          color: trend.color,
+          fontSize,
+          fontFamily: FONT_FAMILY,
+          lineHeight,
+        }}
+      >
+        {trend.value}
+      </span>
+    </span>
+  );
+}
+
+function SleepingIcon() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        height: 94,
+        transform: "translateY(-17px)",
+      }}
+    >
+      <Lottie
+        animationData={zzzAnimation}
+        loop
+        autoplay
+        style={{ width: 94, height: 94, display: "block" }}
+      />
+    </div>
+  );
+}
+
+function DesktopStatusCard({
+  item,
+  index,
+}: {
+  item: DesktopStatusItem;
+  index: number;
+}) {
+  const isWideCard = item.width === 484;
+  const isScoreCard = index === 1 || index === 3;
+
+  return (
+    <div
+      style={{
+        width: item.width,
+        minWidth: item.width,
+        maxWidth: item.width,
+        height: 126,
+        background: COLORS.background,
+        borderRadius: 16,
+        display: "flex",
+        flexDirection: "column",
+        padding: "24px",
+        boxSizing: "border-box",
+        position: "relative",
+        overflow: "visible",
+      }}
+    >
+      <span
+        style={{
+          color: COLORS.label,
+          fontFamily: FONT_FAMILY,
+          fontWeight: 400,
+          fontSize: 14,
+          lineHeight: "26px",
+          marginBottom: 24,
+          display: "block",
+          letterSpacing: 0,
+        }}
+      >
+        {item.label}
+      </span>
+
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: isWideCard ? 434 : "100%",
+          marginLeft: isWideCard ? "auto" : undefined,
+          marginRight: isWideCard ? "auto" : undefined,
+          minHeight: 0,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {item.icon && (
+            <span
+              style={{
+                fontSize: 20,
+                marginRight: 8,
+                lineHeight: "28px",
+              }}
+            >
+              {item.icon}
+            </span>
+          )}
+
+          <span
+            style={{
+              color: COLORS.value,
+              fontFamily: FONT_FAMILY,
+              fontWeight: 500,
+              fontSize: isScoreCard ? 32 : 18,
+              lineHeight: "28px",
+              verticalAlign: "middle",
+            }}
+          >
+            {item.value}
+          </span>
+
+          {item.trend && (
+            <TrendValue
+              trend={item.trend}
+              fontSize={14}
+              lineHeight="16px"
+            />
+          )}
+        </div>
+
+        {item.showBigIcon && <SleepingIcon />}
+      </div>
+    </div>
+  );
+}
+
+function MobileStatusCard({ item }: { item: MobileStatusItem }) {
+  const isScoreCard = Boolean(item.trend);
+
+  return (
+    <div
+      className="bg-[#070D11] rounded-[16px] flex-1 flex flex-col justify-between p-4"
+      style={{ width: item.width, minWidth: 0, height: 130 }}
+    >
+      <span className={item.labelClassName} style={item.labelStyle}>
+        {item.label}
+      </span>
+
+      {isScoreCard ? (
+        <div className="flex items-end">
+          <span
+            className="text-[#C9E2FF] font-semibold"
+            style={{
+              fontSize: 28,
+              fontFamily: FONT_FAMILY,
+              lineHeight: "24px",
+            }}
+          >
+            {item.value}
+          </span>
+
+          {item.trend && (
+            <TrendValue
+              trend={item.trend}
+              fontSize={12}
+              lineHeight="14px"
+              alignItems="flex-end"
+            />
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-col items-start">
+          {item.icon && (
+            <span
+              style={{
+                fontSize: 20,
+                fontFamily: FONT_FAMILY,
+                lineHeight: "20px",
+                marginBottom: 0,
+              }}
+            >
+              {item.icon}
+            </span>
+          )}
+
+          <span
+            className="text-[#C9E2FF] font-semibold"
+            style={{
+              fontSize: 15,
+              fontFamily: FONT_FAMILY,
+              lineHeight: "20px",
+              marginTop: 0,
+            }}
+          >
+            {item.value}
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function DashboardStatusRow() {
   return (
     <>
-      {/* Desktop */}
       <div
         className="hidden xlm:flex"
         style={{
@@ -81,212 +367,27 @@ const DashboardStatusRow: React.FC = () => {
           justifyContent: "space-between",
         }}
       >
-        {status.map((item, idx) => (
-          <div
+        {DESKTOP_STATUS_ITEMS.map((item, index) => (
+          <DesktopStatusCard
             key={item.label}
-            style={{
-              width: item.width,
-              minWidth: item.width,
-              maxWidth: item.width,
-              height: 126,
-              background: "#070D11",
-              borderRadius: 16,
-              display: "flex",
-              flexDirection: "column",
-              padding: "24px",
-              boxSizing: "border-box",
-              position: "relative",
-              overflow: "visible"
-            }}
-          >
-            <span
-              style={{
-                color: "#4F6175",
-                fontFamily: "Instrument Sans, sans-serif",
-                fontWeight: 400,
-                fontSize: 14,
-                lineHeight: "26px",
-                marginBottom: 24,
-                display: "block",
-                letterSpacing: 0,
-              }}
-            >
-              {item.label}
-            </span>
-            <div
-              style={{
-                flex: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: item.width === 484 ? 434 : "100%",
-                marginLeft: item.width === 484 ? "auto" : undefined,
-                marginRight: item.width === 484 ? "auto" : undefined,
-                minHeight: 0,
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center" }}>
-                {item.icon && (
-                  <span style={{ fontSize: 20, marginRight: 8, lineHeight: "28px" }}>
-                    {item.icon}
-                  </span>
-                )}
-                <span
-                  style={{
-                    color: "#C9E2FF",
-                    fontFamily: "Instrument Sans, sans-serif",
-                    fontWeight: 500,
-                    fontSize: (idx === 1 || idx === 3) ? 32 : 18,
-                    lineHeight: "28px",
-                    verticalAlign: "middle",
-                  }}
-                >
-                  {item.value}
-                </span>
-                {item.sub && (
-                  <span style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginLeft: 8,
-                  }}>
-                    <Triangle up={!!item.subUp} color={item.subColor || "#CD2A2A"} />
-                    <span
-                      style={{
-                        color: item.subColor || "#CD2A2A",
-                        fontFamily: "Instrument Sans, sans-serif",
-                        fontWeight: 400,
-                        fontSize: 14,
-                        lineHeight: "16px",
-                        letterSpacing: 0,
-                      }}
-                    >
-                      {item.sub}
-                    </span>
-                  </span>
-                )}
-              </div>
-              {item.bigIcon && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    height: 94,
-                    transform: "translateY(-17px)",
-                  }}
-                >
-                  <Lottie
-                    animationData={zzzAnimation}
-                    loop
-                    autoplay
-                    style={{ width: 94, height: 94, display: "block" }}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
+            item={item}
+            index={index}
+          />
         ))}
       </div>
 
-      {/* Mobile & Tablet */}
-      <div className="flex flex-col gap-4 xlm:hidden" style={{ width: 342, margin: "0 auto", marginTop: 55 }}>
-        <div className="flex gap-2">
-          <div
-            className="bg-[#070D11] rounded-[16px] flex-1 flex flex-col justify-between p-4"
-            style={{ width: 200, minWidth: 0, height: 130 }}
-          >
-            <span className="text-[#4F6175] font-instrument font-normal text-[12px] leading-[22px] mt-[35px] mb-[20px]">
-              Mood Assessment
-            </span>
-            <div className="flex flex-col items-start">
-              <span style={{ fontSize: 20, fontFamily: "Instrument Sans, sans-serif", lineHeight: "20px", marginBottom: 0 }}>😴</span>
-              <span
-                className="text-[#C9E2FF] font-semibold"
-                style={{ fontSize: 15, fontFamily: "Instrument Sans, sans-serif", lineHeight: "20px", marginTop: 0 }}
-              >
-                Not much going on
-              </span>
-            </div>
+      <div
+        className="flex flex-col gap-4 xlm:hidden"
+        style={{ width: 342, margin: "0 auto", marginTop: 55 }}
+      >
+        {MOBILE_STATUS_ROWS.map((row) => (
+          <div key={row.map((item) => item.label).join("-")} className="flex gap-2">
+            {row.map((item) => (
+              <MobileStatusCard key={item.label} item={item} />
+            ))}
           </div>
-          <div
-            className="bg-[#070D11] rounded-[16px] flex-1 flex flex-col justify-between p-4"
-            style={{ width: 158, minWidth: 0, height: 130 }}
-          >
-            <span className="text-[#4F6175] font-normal font-instrument text-[12px] leading-[22px] mt-[35px] mb-[35px]">
-              Mood Score
-            </span>
-            <div className="flex items-end">
-              <span
-                className="text-[#C9E2FF] font-semibold"
-                style={{ fontSize: 28, fontFamily: "Instrument Sans, sans-serif", lineHeight: "24px" }}
-              >
-                -0.31
-              </span>
-              <span className="flex items-center ml-2" style={{ alignItems: "flex-end" }}>
-                <svg width={14} height={14} style={{ marginRight: 4 }}>
-                  <polygon points="7,12 1,2 13,2" fill="#CD2A2A" />
-                </svg>
-                <span
-                  className="text-[#CD2A2A]"
-                  style={{ fontSize: 12, fontFamily: "Instrument Sans, sans-serif", lineHeight: "14px" }}
-                >
-                  -0.17%
-                </span>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <div
-            className="bg-[#070D11] rounded-[16px] flex-1 flex flex-col justify-between p-4"
-            style={{ width: 200, minWidth: 0, height: 130 }}
-          >
-            <span className="text-[#4F6175] font-normal font-instrument text-[12px] leading-[22px] mb-5">
-              Engagement Assessment
-            </span>
-            <div className="flex flex-col items-start">
-              <span style={{ fontSize: 20, fontFamily: "Instrument Sans, sans-serif", lineHeight: "20px", marginBottom: 0 }}>😴</span>
-              <span
-                className="text-[#C9E2FF] font-semibold"
-                style={{ fontSize: 15, fontFamily: "Instrument Sans, sans-serif", lineHeight: "20px", marginTop: 0 }}
-              >
-                Not much going on
-              </span>
-            </div>
-          </div>
-          <div
-            className="bg-[#070D11] rounded-[16px] flex-1 flex flex-col justify-between p-4"
-            style={{ width: 158, minWidth: 0, height: 130 }}
-          >
-            <span
-              className="text-[#4F6175] font-normal font-instrument text-[12px] leading-[22px] mb-5"
-              style={{ whiteSpace: "pre-line" }}
-            >
-              Engagement{"\n"}Score
-            </span>
-            <div className="flex items-end">
-              <span
-                className="text-[#C9E2FF] font-semibold"
-                style={{ fontSize: 28, fontFamily: "Instrument Sans, sans-serif", lineHeight: "24px" }}
-              >
-                0.78
-              </span>
-              <span className="flex items-center ml-2" style={{ alignItems: "flex-end" }}>
-                <svg width={14} height={14} style={{ marginRight: 4 }}>
-                  <polygon points="7,2 1,12 13,12" fill="#239F2E" />
-                </svg>
-                <span
-                  className="text-[#239F2E]"
-                  style={{ fontSize: 12, fontFamily: "Instrument Sans, sans-serif", lineHeight: "14px" }}
-                >
-                  +6.22%
-                </span>
-              </span>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
     </>
   );
-};
-
-export default DashboardStatusRow;
+}
