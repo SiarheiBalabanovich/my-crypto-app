@@ -1,4 +1,4 @@
-import ProgressRow from "../../dashboard/dashboard-section/progress-row";
+import ProgressRow from "../../dashboard/progress-row.tsx/progress-row";
 // Props type
 type MembersCardProps = {
   className?: string;

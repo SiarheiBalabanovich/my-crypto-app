@@ -1,0 +1,1 @@
+export { default as GroupInfoRow } from "./group-info-row";

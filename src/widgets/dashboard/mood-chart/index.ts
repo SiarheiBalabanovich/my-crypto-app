@@ -1,1 +1,1 @@
-export * from './mood-chart';
+export { default as MoodChart } from "./mood-chart";

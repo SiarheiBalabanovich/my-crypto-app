@@ -1,1 +1,2 @@
-export { default } from "./dashboard-section";
+// dashboard-section/index.ts
+export { default as DashboardSection } from "./dashboard-section";
