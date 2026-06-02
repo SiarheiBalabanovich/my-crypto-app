@@ -1,1 +1,1 @@
-export * from './messages-card';
+export { default as MessagesCard } from "./messages-card";
