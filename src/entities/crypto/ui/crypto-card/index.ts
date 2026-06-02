@@ -1,1 +1,1 @@
-export { default } from "./CryptoCard";
+export { default as CryptoCard } from "./CryptoCard";
