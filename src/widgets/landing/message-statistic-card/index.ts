@@ -1,1 +1,1 @@
-export * from './message-statistic-card';
+export { default as MessageStatisticCard } from "./message-statistic-card";
