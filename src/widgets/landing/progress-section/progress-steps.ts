@@ -1,11 +1,11 @@
-export interface ProgressStep {
+export type ProgressStep = {
   planet: string;
   date: string;
   title: string;
   description: string;
-}
+};
 
-export const progressSteps: ProgressStep[] = [
+export const progressSteps = [
   {
     planet: "EARTH",
     date: "May 26, 2025",
@@ -16,19 +16,22 @@ export const progressSteps: ProgressStep[] = [
     planet: "MOON",
     date: "June 2025",
     title: "Model Web App",
-    description: "Model leaves Telegram behind and moves to the web - with countless other functionalities.",
+    description:
+      "Model leaves Telegram behind and moves to the web - with countless other functionalities.",
   },
   {
     planet: "MARS",
     date: "June 2025",
     title: "Mood Shift Realtime Alerts",
-    description: "If the mood changes or explodes, you will be the first to know.",
+    description:
+      "If the mood changes or explodes, you will be the first to know.",
   },
   {
     planet: "JUPITER",
     date: "July 2025",
     title: "Degen / Low-Cap Fear & Greed Index",
-    description: "World Premiere: finally, a fear and greed index for the real Degen jungle.",
+    description:
+      "World Premiere: finally, a fear and greed index for the real Degen jungle.",
   },
   {
     planet: "SATURN",
@@ -58,6 +61,7 @@ export const progressSteps: ProgressStep[] = [
     planet: "CHARON",
     date: "Q2 2026",
     title: "Community Integration Sentiment Agent",
-    description: "It remains mysterious: Conquer the market first and then set the rules.",
+    description:
+      "It remains mysterious: Conquer the market first and then set the rules.",
   },
-];
+] as const satisfies readonly ProgressStep[];

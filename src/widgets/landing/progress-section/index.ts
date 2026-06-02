@@ -1,1 +1,1 @@
-export { default } from "./progress-section";
+export { default as ProgressSection } from "./progress-section";
