@@ -1,1 +1,1 @@
-export * from './get-notified-row';
+export { default as GetNotifiedRow } from "./get-notified-row";

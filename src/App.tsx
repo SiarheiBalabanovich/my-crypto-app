@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HeroSection from "./widgets/landing/hero-section";
-import FeatureSection from "./widgets/landing/feature-section";
+import { FeatureSection } from "./widgets/landing/feature-section";
 import { DashboardSection } from "./widgets/dashboard/dashboard-section";
 import ProgressSection from "./widgets/landing/progress-section";
 import ReadyToTrySection from "./widgets/landing/ready-to-try-section";
