@@ -1,1 +1,1 @@
-export { default } from "./ready-to-try-section";
+export { default as ReadyToTrySection } from "./ready-to-try-section";
