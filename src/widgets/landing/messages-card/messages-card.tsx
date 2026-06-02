@@ -1,4 +1,4 @@
-import ProgressRow from "../../dashboard/progress-row.tsx/progress-row";
+import ProgressRow from "../../dashboard/progress-row/progress-row";
 
 type MessagesCardProps = {
   className?: string;

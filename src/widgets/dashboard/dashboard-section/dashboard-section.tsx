@@ -8,12 +8,12 @@ import MoodEngagePanelIcon from "../../../assets/mood-engagement-panel-icon.svg?
 import MoodChartIcon from "../../../assets/mood-chart-icon.svg?react";
 
 import DashboardHeaderBar from "../dashboard-header-bar/dashboard-header-bar";
-import DashboardMetricsRow from "../dashboard-metrics-row.tsx/dashboard-metrics-row";
-import DashboardStatusRow from "../dashboard-status-row.tsx/dashboard-status-row";
+import DashboardMetricsRow from "../dashboard-metrics-row/dashboard-metrics-row";
+import DashboardStatusRow from "../dashboard-status-row/dashboard-status-row";
 import MoodChart from "../mood-chart/mood-chart";
 import GetNotifiedRow from "../../landing/get-notified-row/get-notified-row";
-import DifferencesRows from "../differences-rows.tsx/differences-rows";
-import GroupInfoRow from "../group-info-row.tsx/group-info-row";
+import DifferencesRows from "../differences-rows/differences-rows";
+import GroupInfoRow from "../group-info-row/group-info-row";
 import DashboardTooltip from "../dashboard-tooltip/dashboard-tooltip";
 
 type DashboardSectionProps = {
