@@ -1,7 +1,7 @@
 import { useMemo, type ReactNode } from "react";
 import { useParams } from "react-router-dom";
 
-import DashboardSection from "../../widgets/dashboard/dashboard-section/dashboard-section";
+import { DashboardSection } from "../../widgets/dashboard/dashboard-section";
 import { ConnectWalletScreen } from "../../features/connect-wallet";
 import { SubscribeNowScreen } from "../../features/subscribe-now";
 import { TokenUnderReviewScreen } from "../../features/token-under-review";

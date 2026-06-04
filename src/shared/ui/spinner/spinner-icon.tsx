@@ -1,16 +1,19 @@
-type SpinnerIconProps = {
+import type { SVGProps } from "react";
+
+type SpinnerIconProps = SVGProps<SVGSVGElement> & {
   size?: number;
   title?: string;
-  className?: string;
 };
 
 const DEFAULT_SPINNER_SIZE = 56;
 const VIEW_BOX_SIZE = 56;
+const CENTER = 28;
 
 export default function SpinnerIcon({
   size = DEFAULT_SPINNER_SIZE,
   title = "Loading",
   className = "",
+  ...svgProps
 }: SpinnerIconProps) {
   return (
     <svg
@@ -18,14 +21,15 @@ export default function SpinnerIcon({
       height={size}
       viewBox={`0 0 ${VIEW_BOX_SIZE} ${VIEW_BOX_SIZE}`}
       fill="none"
-      className={`animate-spin ${className}`}
-      style={{ display: "block" }}
+      className={`animate-spin ${className}`.trim()}
+      style={{ display: "block", ...svgProps.style }}
       role="status"
       aria-label={title}
+      {...svgProps}
     >
       <circle
-        cx="28"
-        cy="28"
+        cx={CENTER}
+        cy={CENTER}
         r="22"
         stroke="#C9E2FF33"
         strokeWidth={7}
