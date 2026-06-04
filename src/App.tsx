@@ -4,7 +4,7 @@ import { FeatureSection } from "./widgets/landing/feature-section";
 import { DashboardSection } from "./widgets/dashboard/dashboard-section";
 import { ProgressSection } from "./widgets/landing/progress-section";
 import { ReadyToTrySection } from "./widgets/landing/ready-to-try-section";
-import Footer from "./widgets/layout/footer";
+import { Footer } from "./widgets/layout/footer";
 import DashboardPage from "./pages/dashboard/dashboard-page";
 
 
